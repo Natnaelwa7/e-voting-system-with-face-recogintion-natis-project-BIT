@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as Election Officer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="text-align: center;">
+    <!-- Centered Title -->
+    <h1 style="margin-bottom: 2rem; color: #34495e; font-size: 2.5rem; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); letter-spacing: 2px; text-align: center;">
+        Register as Election Officer
+    </h1>
+
+    <!-- Registration Form -->
+    <form method="POST" style="display: inline-block; text-align: left;">
+        Name: <input type="text" name="name" required><br><br>
+        Email: <input type="email" name="email" required><br><br>
+        Password: <input type="password" name="password" required minlength="6"><br><br>
+        <button type="submit">Register</button><br><br>
+        
+        <!-- Styled Back to Home Button -->
+        <a href="{{ url_for('home') }}" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: #2ecc71; color: white; text-decoration: none; border-radius: 5px; font-size: 1rem; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); display: inline-block;">
+            Back to Home
+        </a>
+    </form>
+</body>
+</html>

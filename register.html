@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as a Voter</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="text-align: center;">
+    <!-- Centered Title -->
+    <h1 style="margin-bottom: 2rem; color: #34495e; font-size: 2.5rem; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); letter-spacing: 2px;">
+        Register as a Voter
+    </h1>
+
+    <!-- Live Video Stream -->
+    <div style="margin-bottom: 1rem;">
+        <video id="video" width="320" height="240" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <!-- Capture Face Button -->
+    <button onclick="captureFace()" style="background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        Capture Face
+    </button>
+
+    <br><br>
+
+    <!-- Registration Form -->
+    <form id="registerForm" style="display: inline-block; text-align: left;">
+        Name: <input type="text" id="name" name="name" required><br><br>
+        Email: <input type="email" id="email" name="email" required><br><br>
+        Password: <input type="password" id="password" name="password" required><br><br>
+        
+        <!-- Hidden input field for captured face data -->
+        <input type="hidden" id="imageData" name="image">
+        
+        <button type="button" onclick="registerUser()" style="background-color: #2ecc71; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+            Register
+        </button>
+    </form>
+
+    <br><br>
+
+    <!-- Back to Home Button -->
+    <a href="{{ url_for('home') }}" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: #e74c3c; color: white; text-decoration: none; border-radius: 5px;">
+        Back to Home
+    </a>
+
+    <!-- JavaScript to Handle Video Capture -->
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const imageDataInput = document.getElementById('imageData');
+
+        // Access webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing webcam: ", err);
+                alert("Please allow camera access to register.");
+            });
+
+        function captureFace() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg');
+            imageDataInput.value = imageData;
+            alert("Face Captured Successfully!");
+        }
+
+        function registerUser() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const image = imageDataInput.value;
+
+            if (!image) {
+                alert("Please capture your face before registering.");
+                return;
+            }
+
+            fetch('/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, email, password, image })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    // Redirect to login page after successful registration
+                    window.location.href = "/login";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred during registration.");
+            });
+        }
+    </script>
+</body>
+</html>

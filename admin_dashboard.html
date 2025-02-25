@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <a href="{{ url_for('add_candidate') }}">Add Candidate</a><br>
+    <a href="{{ url_for('home') }}">Back to Home</a><br><br>
+
+    <h2>Voters</h2>
+    <table border="1">
+        <tr><th>Name</th><th>Email</th><th>Has Voted</th></tr>
+        {% for voter in voters %}
+            <tr>
+                <td>{{ voter.name }}</td>
+                <td>{{ voter.email }}</td>
+                <td>{{ 'Yes' if voter.has_voted else 'No' }}</td>
+            </tr>
+        {% endfor %}
+    </table><br>
+
+    <h2>Candidates</h2>
+    <table border="1">
+        <tr><th>Name</th><th>Votes</th></tr>
+        {% for candidate in candidates %}
+            <tr>
+                <td>{{ candidate.name }}</td>
+                <td>{{ candidate.votes }}</td>
+            </tr>
+        {% endfor %}
+    </table><br>
+
+    <h2>Election Officers</h2>
+    <table border="1">
+        <tr><th>Name</th><th>Email</th></tr>
+        {% for officer in officers %}
+            <tr>
+                <td>{{ officer.name }}</td>
+                <td>{{ officer.email }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

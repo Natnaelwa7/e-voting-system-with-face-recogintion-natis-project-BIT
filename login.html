@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login as a Voter</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="text-align: center;">
+    <h1>Login as a Voter</h1>
+
+    <div style="margin-bottom: 1rem;">
+        <video id="video" width="320" height="240" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <button onclick="captureFace()">Capture Face</button>
+
+    <form id="loginForm" style="display: inline-block; text-align: left;">
+        Email: <input type="email" id="email" name="email" required><br><br>
+        Password: <input type="password" id="password" name="password" required><br><br>
+        
+        <button type="button" onclick="loginUser()">Login</button>
+    </form>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+
+        // Access webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing webcam: ", err);
+                alert("Please allow camera access for face login.");
+            });
+
+        function captureFace() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+
+        function loginUser() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Convert canvas to base64
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, image: imageData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success && data.redirect) {
+                    window.location.href = data.redirect;  // Redirect to vote page
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

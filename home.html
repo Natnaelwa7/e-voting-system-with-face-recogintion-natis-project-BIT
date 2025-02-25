@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure E-Voting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(45deg, #fff, #90e0ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .logo-text {
+            background: linear-gradient(45deg, #00b4d8, #90e0ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 25, 40, 0.95);
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        nav .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #90e0ef;
+            transition: width 0.3s ease;
+        }
+
+        nav .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 140px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 10%, transparent 10%);
+            animation: animateHeroBackground 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes animateHeroBackground {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .hero .content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: #c2d6ec;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Feature Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .feature-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #90e0ef;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #a8c7eb;
+        }
+
+        /* Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .auth-buttons a {
+            padding: 1.3rem 3.5rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .auth-buttons a:first-child {
+            background: linear-gradient(45deg, #00b4d8, #0077b6);
+            animation-delay: 0.2s;
+        }
+
+        .auth-buttons a:last-child {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            animation-delay: 0.4s;
+        }
+
+        .auth-buttons a:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Security Badge */
+        .security-badge {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.6s;
+        }
+
+        .security-badge i {
+            font-size: 1.8rem;
+            color: #90e0ef;
+        }
+
+        .security-badge p {
+            font-size: 0.9rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .security-badge p:last-child {
+            font-size: 0.8rem;
+            color: #a8c7eb;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+            }
+
+            .security-badge {
+                bottom: 15px;
+                right: 15px;
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <span class="logo logo-text">SecureVote</span>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="{{ url_for('register') }}">Voter Register</a>
+                <a href="{{ url_for('admin_register') }}">Officer Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="content">
+            <h1 class="gradient-text">Next-Generation Secure Voting Platform</h1>
+            <p>Revolutionizing democratic participation with blockchain technology and biometric authentication for unparalleled security and transparency.</p>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+        <div class="feature-card">
+            <i class='bx bxs-shield-alt'></i>
+            <h3>Military-Grade Security</h3>
+            <p>End-to-end encryption with quantum-resistant algorithms</p>
+        </div>
+        <div class="feature-card">
+            <i class='bx bx-face'></i>
+            <h3>Biometric Verification</h3>
+            <p>AI-powered facial recognition with liveness detection</p>
+        </div>
+        <div class="feature-card">
+            <i class='bx bx-data'></i>
+            <h3>Blockchain Backed</h3>
+            <p>Immutable transaction ledger for complete auditability</p>
+        </div>
+    </div>
+
+    <!-- Auth Buttons -->
+    <div class="auth-buttons">
+        <a href="{{ url_for('login') }}">
+            <i class='bx bx-log-in'></i>
+            Voter Login
+        </a>
+        <a href="{{ url_for('admin_login') }}">
+            <i class='bx bx-shield-quarter'></i>
+            Officer Login
+        </a>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="security-badge">
+        <i class='bx bxs-check-shield'></i>
+        <div>
+            <p>ISO 27001 Certified</p>
+            <p>GDPR Compliant</p>
+        </div>
+    </div>
+</body>
+</html>

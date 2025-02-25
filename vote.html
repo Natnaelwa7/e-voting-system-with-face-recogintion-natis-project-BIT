@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cast Your Vote</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Cast Your Vote</h1>
+    <form method="POST">
+        {% for candidate in candidates %}
+            <input type="radio" name="candidate" value="{{ candidate.id }}">{{ candidate.name }}<br>
+        {% endfor %}
+        <button type="submit">Vote</button>
+    </form>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
